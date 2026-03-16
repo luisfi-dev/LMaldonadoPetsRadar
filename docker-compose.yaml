@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: "postgis/postgis:18-3.6-alpine"
+    container_name: PetRadarDB
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres_data_db:/var/lib/postgresql
+    platform: linux/amd64
+
+volumes:
+  postgres_data_db:
