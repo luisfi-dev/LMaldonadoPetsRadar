@@ -10,5 +10,6 @@ import { LostPet } from 'src/core/db/entities/LostPet.entity';
 
   controllers: [LostPetsController],
   providers: [LostPetsService],
+  exports: [LostPetsService],
 })
 export class LostPetsModule {}

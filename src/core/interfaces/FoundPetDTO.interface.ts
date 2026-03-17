@@ -1,3 +1,5 @@
+import { Coordinates } from './Coordinates.interface';
+
 export interface FoundPetDTO {
   species: string;
   breed?: string;
@@ -8,7 +10,7 @@ export interface FoundPetDTO {
   finder_name: string;
   finder_email: string;
   finder_phone: string;
-  location: [number, number];
+  location: Coordinates;
   address: string;
   found_date: Date;
 }
