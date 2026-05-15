@@ -14,6 +14,10 @@ export class LostPetsService {
     private readonly lostPetRepository: Repository<LostPet>,
   ) {}
 
+  async getActiveLostPets(): Promise<LostPet[]> {
+    return this.lostPetRepository.find({ where: { is_active: true } });
+  }
+
   async registerLostPet(petData: LostPetDTO): Promise<LostPet> {
     const pet = this.lostPetRepository.create({
       ...petData,

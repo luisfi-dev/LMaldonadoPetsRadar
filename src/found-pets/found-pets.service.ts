@@ -26,6 +26,10 @@ export class FoundPetsService {
     private readonly lostPetsService: LostPetsService,
   ) {}
 
+  async getFoundPets(): Promise<FoundPet[]> {
+    return this.foundPetRepository.find();
+  }
+
   async registerFoundPet(petData: FoundPetDTO): Promise<FoundPet> {
     const foundPet = this.foundPetRepository.create({
       ...petData,
