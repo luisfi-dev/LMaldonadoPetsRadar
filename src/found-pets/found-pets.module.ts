@@ -7,6 +7,7 @@ import { FoundPet } from 'src/core/db/entities/FoundPet.entity';
 import { EmailModule } from 'src/email/email.module';
 import { MapboxModule } from 'src/mapbox/mapbox.module';
 import { LostPetsModule } from 'src/lost-pets/lost-pets.module';
+import { CacheModule } from 'src/cache/cache.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LostPetsModule } from 'src/lost-pets/lost-pets.module';
     EmailModule,
     MapboxModule,
     LostPetsModule,
+    CacheModule,
   ],
 
   controllers: [FoundPetsController],

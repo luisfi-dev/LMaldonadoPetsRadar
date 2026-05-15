@@ -14,6 +14,9 @@ import { Coordinates } from 'src/core/interfaces/Coordinates.interface';
 import { MapboxService } from 'src/mapbox/mapbox.service';
 import { LostPetsService } from 'src/lost-pets/lost-pets.service';
 import { LostPet } from 'src/core/db/entities/LostPet.entity';
+import { CacheService } from 'src/cache/cache.service';
+
+const FOUND_PETS_CACHE_KEY = 'found-pets:all';
 
 @Injectable()
 export class FoundPetsService {
@@ -24,10 +27,18 @@ export class FoundPetsService {
     private readonly emailService: EmailService,
     private readonly mapboxService: MapboxService,
     private readonly lostPetsService: LostPetsService,
+    private readonly cacheService: CacheService,
   ) {}
 
   async getFoundPets(): Promise<FoundPet[]> {
-    return this.foundPetRepository.find();
+    const cached =
+      await this.cacheService.get<FoundPet[]>(FOUND_PETS_CACHE_KEY);
+    if (cached) return cached;
+
+    const pets = await this.foundPetRepository.find();
+    await this.cacheService.set(FOUND_PETS_CACHE_KEY, pets);
+
+    return pets;
   }
 
   async registerFoundPet(petData: FoundPetDTO): Promise<FoundPet> {
@@ -39,6 +50,7 @@ export class FoundPetsService {
       },
     });
     await this.foundPetRepository.save(foundPet);
+    await this.cacheService.delete(FOUND_PETS_CACHE_KEY);
 
     const nearbyLostPets = await this.lostPetsService.getNearbyLostPets(
       petData.location.lat,
