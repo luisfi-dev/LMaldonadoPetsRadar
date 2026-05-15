@@ -23,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: 612-pet-radar
     container_name: PetRadarApp
     ports:
       - ${PORT}:${PORT}
