@@ -15,6 +15,7 @@ import { MapboxService } from 'src/mapbox/mapbox.service';
 import { LostPetsService } from 'src/lost-pets/lost-pets.service';
 import { LostPet } from 'src/core/db/entities/LostPet.entity';
 import { CacheService } from 'src/cache/cache.service';
+import { logger } from 'src/config/logger';
 
 const FOUND_PETS_CACHE_KEY = 'found-pets:all';
 
@@ -35,7 +36,12 @@ export class FoundPetsService {
       await this.cacheService.get<FoundPet[]>(FOUND_PETS_CACHE_KEY);
     if (cached) return cached;
 
+    logger.info('FoundPets: iniciando lectura de mascotas encontradas');
     const pets = await this.foundPetRepository.find();
+    logger.info(
+      `FoundPets: lectura exitosa de mascotas encontradas (${pets.length} registro(s))`,
+    );
+
     await this.cacheService.set(FOUND_PETS_CACHE_KEY, pets);
 
     return pets;
@@ -49,7 +55,13 @@ export class FoundPetsService {
         coordinates: coordinatesToPostgis(petData.location),
       },
     });
+
+    logger.info('FoundPets: iniciando escritura de mascota encontrada');
     await this.foundPetRepository.save(foundPet);
+    logger.info(
+      `FoundPets: escritura exitosa de mascota encontrada (id=${foundPet.id})`,
+    );
+
     await this.cacheService.delete(FOUND_PETS_CACHE_KEY);
 
     const nearbyLostPets = await this.lostPetsService.getNearbyLostPets(

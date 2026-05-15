@@ -14,4 +14,8 @@ export const env = {
   DB_NAME: envVar.get('DB_NAME').required().asString(),
   REDIS_HOST: envVar.get('REDIS_HOST').required().asString(),
   REDIS_PORT: envVar.get('REDIS_PORT').required().asPortNumber(),
+  APPINSIGHTS_CONNECTION_STRING: envVar
+    .get('APPINSIGHTS_CONNECTION_STRING')
+    .required()
+    .asString(),
 };
