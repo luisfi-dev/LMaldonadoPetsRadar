@@ -11,5 +11,26 @@ services:
       - postgres_data_db:/var/lib/postgresql
     platform: linux/amd64
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: PetRadarApp
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - PORT=${PORT}
+      - MAPBOX_TOKEN=${MAPBOX_TOKEN}
+      - MAILER_EMAIL=${MAILER_EMAIL}
+      - MAILER_PASSWORD=${MAILER_PASSWORD}
+      - MAILER_SERVICE=${MAILER_SERVICE}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - postgres
+
 volumes:
   postgres_data_db:
