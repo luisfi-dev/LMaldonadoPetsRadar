@@ -36,3 +36,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Disparar el despliegue en Render
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"

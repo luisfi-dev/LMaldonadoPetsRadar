@@ -11,6 +11,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: env.DB_NAME,
   username: env.DB_USER,
   password: env.DB_PASSWORD,
+  ssl: env.DB_SSL ? { rejectUnauthorized: false } : false,
   entities: [LostPet, FoundPet],
   synchronize: false,
   migrations: ['dist/core/db/migrations/*'],
